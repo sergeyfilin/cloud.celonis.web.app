@@ -12,7 +12,6 @@ pipeline {
 			steps {
 				echo 'Celonis web app build was created'		
 			}
-			echo 'Celonis web app build was created'
 		}
 		stage('Deploy to Test environment') {
 			steps {
