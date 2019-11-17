@@ -20,7 +20,11 @@ pipeline {
 		}
 		stage('Execute E2E tests') {
 			steps {
-				echo 'Celonis web app was under the E2E tests'	
+				git branch: 'master',
+    				credentialsId: '76a3d309-924e-4a51-ae24-de38b36806e8',
+    				url: 'https://github.com/sergeyfilin/cloud.celonis.testautomation.app.git'
+
+    			sh "./gradlew test"	
 			}
 			post {
 				always {
