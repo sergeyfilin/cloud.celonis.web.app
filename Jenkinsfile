@@ -13,12 +13,12 @@ pipeline {
 				echo 'Celonis web app build was created'		
 			}
 		}
-		stage('Deploy to Test environment') {
+		stage('Deploy to Test Environment') {
 			steps {
 				echo 'Celonis web app was deployed to Test environment'			
 			}
 		}
-		stage('Execute Smoke tests') {
+		stage('Execute Smoke Tests') {
 		    when {
 		        tag "hotFix-*"
 		    }
@@ -36,12 +36,12 @@ pipeline {
 						keepAll: true,
 						reportDir: 'target/site/serenity/',
 						reportFiles: 'index.html',
-						reportName: 'Test Report'
+						reportName: 'Smoke Test Report'
 					]
 				}	
 			}	
 		}
-		stage('Execute E2E tests') {
+		stage('Execute Regression Tests') {
 		    steps {
 				git branch: 'master',
     				credentialsId: '76a3d309-924e-4a51-ae24-de38b36806e8',
@@ -56,7 +56,7 @@ pipeline {
 						keepAll: true,
 						reportDir: 'target/site/serenity/',
 						reportFiles: 'index.html',
-						reportName: 'Test Report'
+						reportName: 'Regression Test Report'
 					]
 				}
 			}
