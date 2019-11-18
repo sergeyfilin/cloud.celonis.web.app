@@ -18,15 +18,17 @@ pipeline {
 				echo 'Celonis web app was deployed to Test environment'			
 			}
 		}
-		stage('Execute E2E tests') {
+		stage('Execute Smoke tests') {
+		    when {
+		        tag "hotFix-*"
+		    }
 			steps {
 				git branch: 'master',
     				credentialsId: '76a3d309-924e-4a51-ae24-de38b36806e8',
     				url: 'https://github.com/sergeyfilin/cloud.celonis.testautomation.app.git'
-
-    			sh "./gradlew test"	
-			}
-			post {
+    		    sh "./gradlew test -Dtags=smoke"
+    		}
+    		post {
 				always {
 					publishHTML target: [
 						allowMissing: false,
@@ -38,6 +40,26 @@ pipeline {
 					]
 				}	
 			}	
+		}
+		stage('Execute E2E tests') {
+		    steps {
+				git branch: 'master',
+    				credentialsId: '76a3d309-924e-4a51-ae24-de38b36806e8',
+    				url: 'https://github.com/sergeyfilin/cloud.celonis.testautomation.app.git'
+    		    sh "./gradlew test"
+    		}
+    		post {
+				always {
+					publishHTML target: [
+						allowMissing: false,
+						alwaysLinkToLastBuild: false,
+						keepAll: true,
+						reportDir: 'target/site/serenity/',
+						reportFiles: 'index.html',
+						reportName: 'Test Report'
+					]
+				}
+			}
 		}
 	}
 
